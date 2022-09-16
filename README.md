@@ -111,3 +111,158 @@ Once you have pushed your progress,
 ---
 
 <a name="ftn1">1</a>: This scenario is inspired by the *[Tying This Together: Reverse Engineering a Production Service](https://sre.google/sre-book/accelerating-sre-on-call/#tying-this-together-reverse-engineering-a-production-service-ZKsDiLce)* section of chapter 28 from the Site Reliability Engineering book by Google.
+
+
+
+
+###########################################################################
+docker pull infracloudio/csvserver:latest
+docker pull prom/prometheus:v2.22.0
+
+
+#!/bin/bash
+RANDOM=$$
+for i in `seq 1000`
+do
+        echo $RANDOM
+done
+
+
+root@DESKTOP-OS8MF5Q:~# ./test.sh
+3949
+15669
+4268
+9643
+1154
+31940
+17745
+27891
+31402
+27084
+
+##################
+
+
+
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker images
+REPOSITORY               TAG       IMAGE ID       CREATED         SIZE
+infracloudio/csvserver   latest    8cb989ef80b5   18 months ago   237MB
+prom/prometheus          v2.22.0   7adf5a25557b   23 months ago   168MB
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker run -d -i infracloudio/csvserver:latest
+3dd10abb3ced33f7844b8cab5ee6310e252b0fb3a5c120842c64a463b21fa9b9
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker ps -a
+CONTAINER ID   IMAGE                           COMMAND                  CREATED          STATUS
+    PORTS     NAMES
+3dd10abb3ced   infracloudio/csvserver:latest   "/csvserver/csvserver"   17 seconds ago   Exited (1) 15 seconds ag
+o             awesome_volhard
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker logs 3dd10abb3ced
+2022/09/16 14:27:37 error while reading the file "/csvserver/inputdata": open /csvserver/inputdata: no such file or direct
+ory
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker run -d -i -v  /c/Users/hi/Desktop/dockertest/inputFile:/csvserver/inputdata -p 9393:9300   infracloudio/csvserver:latest
+5dfd8ff8bb973343bd602ba1ca496e89c4c00899c892fdef40ffd5a8101f758a
+
+
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker ps -a
+CONTAINER ID   IMAGE                           COMMAND                  CREATED          STATUS                      PORTS     NAMES
+76861af1dc4c   infracloudio/csvserver:latest   "/csvserver/csvserver"   7 seconds ago    Exited (1) 6 seconds ago              romantic_carver
+84daaa2c9321   infracloudio/csvserver:latest   "/csvserver/csvserver"   22 seconds ago   Exited (1) 20 seconds ago             eager_bose
+23b122c7a9bc   infracloudio/csvserver:latest   "/csvserver/csvserver"   6 minutes ago    Exited (1) 6 minutes ago              musing_banzai
+8cc69adab4be   infracloudio/csvserver:latest   "/csvserver/csvserver"   11 minutes ago   Exited (1) 11 minutes ago             ecstatic_shockley
+7b653d290c1e   infracloudio/csvserver:latest   "/csvserver/csvserver"   12 minutes ago   Exited (1) 12 minutes ago             silly_wilbur
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker run -d -i -v  /c/Users/hi/Desktop/dockertest/inputFile:/csvserver/inputdata -p 9393:9300  -e CSVSERVER_BORDER='Orange'  infracloudio/csvserver:latest
+3fc038b866ed9fda9fe052599a412ee6003e1e12ad82da1e13de4307c2ab5bc7
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker ps -a
+CONTAINER ID   IMAGE                           COMMAND                  CREATED          STATUS                      PORTS     NA
+MES
+5dfd8ff8bb97   infracloudio/csvserver:latest   "/csvserver/csvserver"   7 seconds ago    Exited (1) 6 seconds ago              an
+gry_poincare
+757adc62e0ab   8cb989ef80b5                    "/csvserver/csvserver"   7 minutes ago    Exited (1) 7 minutes ago              th
+irsty_visvesvaraya
+3d0092300d9c   8cb989ef80b5                    "/csvserver/csvserver"   8 minutes ago    Exited (1) 8 minutes ago              fr
+iendly_joliot
+90bffa665f53   infracloudio/csvserver:latest   "/csvserver/csvserver"   15 minutes ago   Exited (1) 15 minutes ago             ne
+rvous_wilbur
+3dd10abb3ced   infracloudio/csvserver:latest   "/csvserver/csvserver"   17 minutes ago   Exited (1) 17 minutes ago             aw
+esome_volhard
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker images
+REPOSITORY               TAG       IMAGE ID       CREATED         SIZE
+infracloudio/csvserver   latest    8cb989ef80b5   18 months ago   237MB
+prom/prometheus          v2.22.0   7adf5a25557b   23 months ago   168MB
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ dockrer run -it  8cb989ef80b5
+bash: dockrer: command not found
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$ docker run -it  8cb989ef80b5
+2022/09/16 14:37:57 error while reading the file "/csvserver/inputdata": open /csvserver/inputdata: no such file or directory
+
+hi@DESKTOP-OS8MF5Q MINGW64 ~/Desktop/dockertest
+$
+
+
+
+
+#################
+                     /c/Users/hi/Desktop/dockertest
+
+docker run -d -i -v  /c/Users/hi/Desktop/dockertest/inputFile:/csvserver/inputdata   infracloudio/csvserver:latest
+
+
+docker run -d -i -v  /c/Users/hi/Desktop/dockertest/inputFile:/csvserver/inputdata -p 9393:9300 infracloudio/csvserver:latest
+
+ docker run -d -i -v  /c/Users/hi/Desktop/dockertest/inputFile:/csvserver/inputdata -p 9393:9300  -e CSVSERVER_BORDER='Orange'  infracloudio/csvserver:latest
+
+ 
+
+http://localhost:9393
+
